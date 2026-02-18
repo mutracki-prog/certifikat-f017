@@ -22,6 +22,8 @@
             --dark: #2c2926;
             --gold: #b8973a;
             --border: #ddd8d0;
+            --red: #9b3b3b;
+            --red-light: #c25050;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -52,6 +54,9 @@
         .card-accent {
             height: 4px;
             background: linear-gradient(90deg, var(--sage) 0%, var(--sage-light) 40%, var(--gold) 100%);
+        }
+        .card-accent.expired {
+            background: linear-gradient(90deg, var(--red) 0%, var(--warm-gray) 100%);
         }
         .card-body { padding: 2.8rem 3rem 2.4rem; }
         .org-label {
@@ -125,12 +130,19 @@
             font-weight: 500;
             color: var(--sage);
         }
+        .status-badge.expired {
+            color: var(--red);
+        }
         .status-dot {
             width: 7px;
             height: 7px;
             border-radius: 50%;
             background: var(--sage-light);
             animation: pulse 2.5s ease-in-out infinite;
+        }
+        .status-dot.expired {
+            background: var(--red);
+            animation: none;
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -189,7 +201,7 @@
 </head>
 <body>
     <main class="card">
-        <div class="card-accent"></div>
+        <div class="card-accent" id="accent"></div>
         <div class="card-body">
             <p class="org-label">Certificate F017</p>
             <p class="org-name">Czech Society for Cervical Pathology and Colposcopy (ČSCPC), section of ČGPS</p>
@@ -215,9 +227,9 @@
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">Status</span>
-                    <span class="status-badge">
-                        <span class="status-dot"></span>
-                        Active
+                    <span class="status-badge" id="status">
+                        <span class="status-dot" id="dot"></span>
+                        <span id="status-text">Active</span>
                     </span>
                 </div>
             </div>
@@ -233,5 +245,16 @@
             </a>
         </div>
     </main>
+
+    <script>
+        var expiry = new Date('2026-10-16');
+        var now = new Date();
+        if (now > expiry) {
+            document.getElementById('accent').classList.add('expired');
+            document.getElementById('status').classList.add('expired');
+            document.getElementById('dot').classList.add('expired');
+            document.getElementById('status-text').textContent = 'Expired';
+        }
+    </script>
 </body>
 </html>
